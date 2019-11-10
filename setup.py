@@ -14,20 +14,20 @@ plugin_package = "octoprint_detailedprogress"
 plugin_name = "OctoPrint-DetailedProgress"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
-plugin_version = "0.1.4"
+plugin_version = "0.1.4a"
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
 plugin_description = """Displays detailed progress on the LCD screen"""
 
 # The plugin's author. Can be overwritten within OctoPrint's internal data via __plugin_author__ in the plugin module
-plugin_author = "Dattas Moonchaser"
+plugin_author = "Dattas Moonchaser, mod by Pete Turnbull"
 
 # The plugin's author's mail address.
-plugin_author_email = "dattasmoon@gmail.com"
+plugin_author_email = "tech@dunnington.cx"
 
 # The plugin's homepage URL. Can be overwritten within OctoPrint's internal data via __plugin_url__ in the plugin module
-plugin_url = "https://github.com/dattas/OctoPrint-DetailedProgress"
+plugin_url = "https://github.com/pnt103/OctoPrint-DetailedProgress"
 
 # The plugin's license. Can be overwritten within OctoPrint's internal data via __plugin_license__ in the plugin module
 plugin_license = "AGPLv3"
