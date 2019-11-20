@@ -16,6 +16,16 @@ class DetailedProgressPlugin(octoprint.plugin.EventHandlerPlugin,
 	_etl_format = ""
 	_eta_strftime = ""
 	_messages = []
+	_havelayerinfo = False
+	
+	
+	##~~ new: see if the DisplaylayerprogressPlugin() is available
+	def __init__(self):
+		self._logger.info("Detailed progress __init__.")
+		if hasattr(octoprint.events.Events, "DisplayLayerProgress_layerChanged"):
+			self._havelayerinfo = True
+			self._logger.info("DetailedProgress thinks DisplayLayerProgress_layerChanged is available.")
+	
 	def on_event(self, event, payload):
 		if event == Events.PRINT_STARTED:
 			self._logger.info("Printing started. Detailed progress started.")
@@ -62,13 +72,13 @@ class DetailedProgressPlugin(octoprint.plugin.EventHandlerPlugin,
 		accuracy = currentData["progress"]["printTimeLeftOrigin"]
 		if accuracy:
 			if accuracy == "estimate":
-				accuracy = "Best"
+				accuracy = "best"
 			elif accuracy == "average" or accuracy == "genius":
-				accuracy = "Good"
+				accuracy = "good"
 			elif accuracy == "analysis" or accuracy.startswith("mixed"):
-				accuracy = "Medium"
+				accuracy = "medium"
 			elif accuracy == "linear":
-				accuracy = "Bad"
+				accuracy = "poor"
 			else:
 				accuracy = "ERR"
 				self._logger.debug("Caught unmapped accuracy value: {0}".format(accuracy))
@@ -115,16 +125,19 @@ class DetailedProgressPlugin(octoprint.plugin.EventHandlerPlugin,
 	##~~ Settings
 
 	def get_settings_defaults(self):
+		messages = [
+			"{completion:.2f}%  complete",
+			"ETL {printTimeLeft}",
+			"ETA {ETA}",
+			"accuracy: {accuracy}"
+		       ]
+		#if self._havelayerinfo == True:
+		#	messages.append("Layer {LayerInfo}")
 		return dict(
-			messages = [
-				"{completion:.2f}p  complete",
-				"ETL {printTimeLeft}",
-				"ETA {ETA}",
-				"{accuracy} accuracy"
-			],
-			eta_strftime = "%H %M %S Day %d",
-			etl_format = "{hours:02d}h{minutes:02d}m{seconds:02d}s",
-			time_to_change = 10
+			messages, 
+			eta_strftime = "%H %M %S %b %dth",
+			etl_format = "{hours:02d}:{minutes:02d}:{seconds:02d}s",
+			time_to_change = 5
 		)
 
 	##~~ Softwareupdate hook
@@ -137,12 +150,12 @@ class DetailedProgressPlugin(octoprint.plugin.EventHandlerPlugin,
 
 				# version check: github repository
 				type="github_release",
-				user="dattas",
+				user="pnt103",
 				repo="OctoPrint-DetailedProgress",
 				current=self._plugin_version,
 
 				# update method: pip
-				pip="https://github.com/dattas/OctoPrint-DetailedProgress/archive/{target_version}.zip"
+				pip="https://github.com/pnt103/OctoPrint-DetailedProgress/archive/{target_version}.zip"
 			)
 		)
 
