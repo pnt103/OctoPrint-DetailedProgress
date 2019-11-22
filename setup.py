@@ -4,30 +4,30 @@
 ### Do not forget to adjust the following variables to your own plugin.
 
 # The plugin's identifier, has to be unique
-plugin_identifier = "detailedprogress"
+plugin_identifier = "timesandlayers"
 
 # The plugin's python package, should be "octoprint_<plugin identifier>", has to be unique
-plugin_package = "octoprint_detailedprogress"
+plugin_package = "octoprint_timesandlayers"
 
 # The plugin's human readable name. Can be overwritten within OctoPrint's internal data via __plugin_name__ in the
 # plugin module
-plugin_name = "OctoPrint-DetailedProgress"
+plugin_name = "OctoPrint-TimesAndLayers"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
-plugin_version = "0.1.4a1"
+plugin_version = "0.1.0"
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
-plugin_description = """Displays detailed progress on the LCD screen"""
+plugin_description = """Displays ETA/ETL, and layer progress if available, on the LCD screen"""
 
 # The plugin's author. Can be overwritten within OctoPrint's internal data via __plugin_author__ in the plugin module
-plugin_author = "Dattas Moonchaser, mod by Pete Turnbull"
+plugin_author = "Pete Turnbull, based on DetailedProgress by Dattas Moonchaser"
 
 # The plugin's author's mail address.
 plugin_author_email = "tech@dunnington.cx"
 
 # The plugin's homepage URL. Can be overwritten within OctoPrint's internal data via __plugin_url__ in the plugin module
-plugin_url = "https://github.com/pnt103/OctoPrint-DetailedProgress"
+plugin_url = "https://github.com/pnt103/OctoPrint-TimesAndLayers"
 
 # The plugin's license. Can be overwritten within OctoPrint's internal data via __plugin_license__ in the plugin module
 plugin_license = "AGPLv3"
