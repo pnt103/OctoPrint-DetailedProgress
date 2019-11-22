@@ -8,8 +8,10 @@ import octoprint.util
 import traceback
 from octoprint.events import Events
 
-class DetailedProgressPlugin(octoprint.plugin.EventHandlerPlugin,
-                             octoprint.plugin.SettingsPlugin):
+class TimesAndLayersPlugin(octoprint.plugin.StartupPlugin,
+			octoprint.plugin.EventHandlerPlugin,
+			octoprint.plugin.SettingsPlugin):
+
 	_last_updated = 0.0
 	_last_message = 0
 	_repeat_timer = None
@@ -20,15 +22,15 @@ class DetailedProgressPlugin(octoprint.plugin.EventHandlerPlugin,
 	
 	
 	##~~ new: see if the DisplaylayerprogressPlugin() is available
-	def __init__(self):
-		self._logger.info("Detailed progress __init__.")
+	def on_after_startup(self):
+		self._logger.info("TimesAndLayers plugin startup.")
 		if hasattr(octoprint.events.Events, "DisplayLayerProgress_layerChanged"):
 			self._havelayerinfo = True
-			self._logger.info("DetailedProgress thinks DisplayLayerProgress_layerChanged is available.")
+			self._logger.info("TimesAndLayers thinks event DisplayLayerProgress_layerChanged is available.")
 	
 	def on_event(self, event, payload):
 		if event == Events.PRINT_STARTED:
-			self._logger.info("Printing started. Detailed progress started.")
+			self._logger.info("Printing started. Times And Layers plugin started.")
 			self._etl_format = self._settings.get(["etl_format"])
 			self._eta_strftime = self._settings.get(["eta_strftime"])
 			self._messages = self._settings.get(["messages"])
@@ -38,8 +40,8 @@ class DetailedProgressPlugin(octoprint.plugin.EventHandlerPlugin,
 			if self._repeat_timer != None:
 				self._repeat_timer.cancel()
 				self._repeat_timer = None
-			self._logger.info("Printing stopped. Detailed progress stopped.")
-			self._printer.commands("M117 Print Done")
+			self._logger.info("Printing stopped. TimesAndLayers plugin stopped.")
+			self._printer.commands("M117 Print finished")
 		elif event == Events.CONNECTED:
 			ip = self._get_host_ip()
 			if not ip:
@@ -126,7 +128,7 @@ class DetailedProgressPlugin(octoprint.plugin.EventHandlerPlugin,
 
 	def get_settings_defaults(self):
 		messages = [
-			"{completion:.2f}%  complete",
+			"{completion:.2f}pc complete",
 			"ETL {printTimeLeft}",
 			"ETA {ETA}",
 			"accuracy: {accuracy}"
@@ -135,9 +137,9 @@ class DetailedProgressPlugin(octoprint.plugin.EventHandlerPlugin,
 		#	messages.append("Layer {LayerInfo}")
 		return dict(
 			messages, 
-			eta_strftime = "%H %M %S %b %dth",
+			eta_strftime = "%H %M %S %dth %b",
 			etl_format = "{hours:02d}:{minutes:02d}:{seconds:02d}s",
-			time_to_change = 5
+			time_to_change = 6
 		)
 
 	##~~ Softwareupdate hook
@@ -145,25 +147,25 @@ class DetailedProgressPlugin(octoprint.plugin.EventHandlerPlugin,
 	def get_update_information(self):
 		return dict(
 			detailedprogress=dict(
-				displayName="DetailedProgress Plugin",
+				displayName="TimesAndLayers Plugin",
 				displayVersion=self._plugin_version,
 
 				# version check: github repository
 				type="github_release",
 				user="pnt103",
-				repo="OctoPrint-DetailedProgress",
+				repo="OctoPrint-TimesAndLayers",
 				current=self._plugin_version,
 
 				# update method: pip
-				pip="https://github.com/pnt103/OctoPrint-DetailedProgress/archive/{target_version}.zip"
+				pip="https://github.com/pnt103/OctoPrint-TimesAndLayers/archive/{target_version}.zip"
 			)
 		)
 
-__plugin_name__ = "Detailed Progress Plugin"
+__plugin_name__ = "Layers And Times Plugin"
 
 def __plugin_load__():
 	global __plugin_implementation__
-	__plugin_implementation__ = DetailedProgressPlugin()
+	__plugin_implementation__ = TimesAndLayersPlugin()
 
 	global __plugin_hooks__
 	__plugin_hooks__ = {
